@@ -1,0 +1,17 @@
+[
+    {
+        "title": "Getting Started with RAG Systems",
+        "date": "2024-09-15",
+        "dateFormatted": "September 15, 2024",
+        "url": "blog/getting-started-with-rag-systems.html",
+        "description": "A comprehensive guide to building Retrieval Augmented Generation systems from scratch",
+        "category": "RAG & LLMs",
+        "tags": [
+            "RAG",
+            "LLMs",
+            "Python",
+            "Vector Databases"
+        ],
+        "pinned": true
+    }
+]

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chirag Bansal - ML Engineer specializing in Generative AI & LLMs. 2+ years of production experience delivering measurable impact through AI solutions.">
+    <meta name="author" content="Chirag Bansal">
+    <meta name="keywords" content="AI, Machine Learning, ML Engineer, Generative AI, LLMs, RAG, Portfolio">
+    
+    <title>Chirag Bansal - ML Engineer | AI & LLM Specialist</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Chirag Bansal</div>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                    <span id="themeText">Dark</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="container-custom">
+            <div class="nav-content">
+                <!-- Logo -->
+                <div class="nav-logo" id="navLogo">
+                    <div class="logo-icon">
+                        <span>CB</span>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="nav-links desktop-nav" id="navLinks">
+                    <a href="#home" class="nav-link active" data-section="home">Home</a>
+                    <a href="#projects" class="nav-link" data-section="projects">Projects</a>
+                    <a href="#status" class="nav-link" data-section="status">Status</a>
+                    <a href="#environment" class="nav-link" data-section="environment">Environment</a>
+                    <a href="#blog" class="nav-link" data-section="blog">Blog</a>
+                    <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <div class="container-custom">
+                <a href="#home" class="mobile-nav-link active" data-section="home">Home</a>
+                <a href="#projects" class="mobile-nav-link" data-section="projects">Projects</a>
+                <a href="#status" class="mobile-nav-link" data-section="status">Status</a>
+                <a href="#environment" class="mobile-nav-link" data-section="environment">Environment</a>
+                <a href="#blog" class="mobile-nav-link" data-section="blog">Blog</a>
+                <a href="#contact" class="mobile-nav-link" data-section="contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="ai-pattern-bg"></div>
+            <div class="container-custom">
+                <div class="hero-grid">
+                    <div class="hero-content fade-in">
+                        <div class="availability-badge">
+                            <div class="pulse-dot"></div>
+                            <span>Available for opportunities</span>
+                        </div>
+                        
+                        <div class="hero-text">
+                            <h1 class="hero-title">
+                                Hi, I'm <span class="text-gradient">Chirag Bansal</span>
+                            </h1>
+                            <h2 class="hero-subtitle">
+                                ML Engineer specializing in <span class="text-accent">Generative AI</span> & <span class="text-accent">LLMs</span>
+                            </h2>
+                            <p class="hero-description">
+                                2+ years of production experience delivering measurable impact through AI solutions. 
+                                Expert in RAG architectures, model deployment, and turning complex business problems into data-driven solutions.
+                            </p>
+                        </div>
+                        
+                        <div class="hero-metrics">
+                            <div class="metric-item">
+                                <div class="metric-value">78%</div>
+                                <div class="metric-label">Model Accuracy</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">$100K+</div>
+                                <div class="metric-label">Cost Savings</div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-value">38%</div>
+                                <div class="metric-label">Response Time Improvement</div>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-actions">
+                            <a href="#projects" class="btn btn-primary">View Projects</a>
+                            <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                        </div>
+                        
+                        <!-- Social Links -->
+                        <div class="social-links">
+                            <a href="https://linkedin.com/in/chirag-bansal-ai" target="_blank" rel="noopener noreferrer" class="social-link">
+                                <i data-lucide="linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://github.com/chiragbansal" target="_blank" rel="noopener noreferrer" class="social-link">
+                                <i data-lucide="github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://kaggle.com/chiragbansal" target="_blank" rel="noopener noreferrer" class="social-link">
+                                <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.285.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.07.336"/>
+                                </svg>
+                                <span>Kaggle</span>
+                            </a>
+                            <a href="/resume.pdf" download class="social-link">
+                                <i data-lucide="download"></i>
+                                <span>Resume</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-visual">
+                        <div class="visual-container">
+                            <div class="gradient-blob"></div>
+                            <div class="visual-icon">🤖</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section projects-section">
+            <div class="container-custom">
+                <div class="section-header fade-in-up">
+                    <span class="section-badge">Projects</span>
+                    <h2 class="section-title">Featured AI Projects</h2>
+                    <p class="section-description">
+                        Showcasing production-ready AI solutions that deliver measurable business impact
+                    </p>
+                </div>
+                
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Projects will be dynamically inserted here by JavaScript -->
+                </div>
+                
+                <div class="section-cta fade-in-up">
+                    <p class="cta-text">
+                        Interested in collaborating on AI projects or learning more about my work?
+                    </p>
+                    <a href="#contact" class="btn btn-primary">Let's Collaborate</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current Status Section -->
+        <section id="status" class="section status-section">
+            <div class="container-custom">
+                <div class="status-container">
+                    <div class="section-header">
+                        <h2 class="section-title">Current Status</h2>
+                        <p class="section-description">
+                            Real-time metrics from my development journey
+                        </p>
+                    </div>
+                    
+                    <div class="status-info">
+                        <div class="status-badge">
+                            <i data-lucide="map-pin"></i>
+                            <span>Scarborough, ON, Canada</span>
+                        </div>
+                        <div class="status-badge available">
+                            <div class="pulse-dot"></div>
+                            <span>Available</span>
+                        </div>
+                        <div class="status-badge">
+                            <i data-lucide="clock"></i>
+                            <span>Updated 2h ago</span>
+                        </div>
+                    </div>
+                    
+                    <div class="metrics-grid" id="statusMetrics">
+                        <!-- Status metrics will be dynamically inserted here -->
+                    </div>
+                    
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <i data-lucide="activity"></i>
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div class="activity-list" id="recentActivity">
+                            <!-- Recent activity will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Development Environment Section -->
+        <section id="environment" class="section environment-section">
+            <div class="container-custom">
+                <div class="environment-container">
+                    <div class="section-header">
+                        <h2 class="section-title">Development Environment</h2>
+                        <p class="section-description">
+                            Real-time system metrics and development statistics
+                        </p>
+                    </div>
+                    
+                    <div class="system-grid" id="systemWidgets">
+                        <!-- System widgets will be dynamically inserted here -->
+                    </div>
+                    
+                    <div class="dev-stats-grid">
+                        <div class="dev-card">
+                            <div class="dev-card-header">
+                                <i data-lucide="activity"></i>
+                                <h3>Development Activity</h3>
+                            </div>
+                            <div class="dev-stats-list" id="devStats">
+                                <!-- Dev stats will be dynamically inserted here -->
+                            </div>
+                        </div>
+                        
+                        <div class="dev-card">
+                            <div class="dev-card-header">
+                                <i data-lucide="zap"></i>
+                                <h3>Training Job</h3>
+                                <span class="status-tag active" id="trainingStatus">Active</span>
+                            </div>
+                            <div class="training-info" id="trainingInfo">
+                                <!-- Training info will be dynamically inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="section blog-section">
+            <div class="container-custom">
+                <div class="section-header">
+                    <h2 class="section-title">Latest Blog Posts</h2>
+                    <p class="section-description">
+                        Recent thoughts on AI, machine learning, and web development.
+                    </p>
+                </div>
+                
+                <div class="blog-grid" id="blogGrid">
+                    <!-- Blog posts will be dynamically inserted here -->
+                </div>
+                
+                <div class="empty-state" id="blogEmptyState">
+                    <div class="empty-icon">
+                        <i data-lucide="book-open"></i>
+                    </div>
+                    <h3>No posts yet</h3>
+                    <p>Blog posts are coming soon. Check back later for insights and updates!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section contact-section">
+            <div class="container-custom">
+                <div class="section-header">
+                    <span class="section-badge">Contact</span>
+                    <h2 class="section-title">Let's Build Something Amazing</h2>
+                    <p class="section-description">
+                        Ready to collaborate on AI projects? I'm always interested in discussing new opportunities and innovative solutions.
+                    </p>
+                </div>
+                
+                <div class="contact-grid">
+                    <a href="mailto:chiragbansal254@gmail.com" class="contact-card">
+                        <div class="contact-icon">📧</div>
+                        <h3>Email</h3>
+                        <p>chiragbansal254@gmail.com</p>
+                    </a>
+                    <a href="tel:+14374313144" class="contact-card">
+                        <div class="contact-icon">📱</div>
+                        <h3>Phone</h3>
+                        <p>(+1) 437-431-3144</p>
+                    </a>
+                    <div class="contact-card">
+                        <div class="contact-icon">📍</div>
+                        <h3>Location</h3>
+                        <p>Scarborough, ON, Canada</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-custom">
+            <div class="footer-content">
+                <p class="footer-text">© 2024 Chirag Bansal. Powered by AI Innovation.</p>
+                <div class="footer-links">
+                    <a href="#home">Home</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#status">Status</a>
+                    <a href="#environment">Environment</a>
+                    <a href="#blog">Blog</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

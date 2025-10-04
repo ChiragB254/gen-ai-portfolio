@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Posts - Chirag Bansal</title>
+    <meta name="description" content="All blog posts about AI, ML, and LLMs by Chirag Bansal">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --text-secondary: #666666;
+            --accent-color: #2563eb;
+            --card-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --code-bg: #f1f5f9;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-color: #3b82f6;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --code-bg: #1e293b;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-color);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 8px 16px;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Section */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--accent-color);
+        }
+
+        /* Controls */
+        .posts-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .sort-controls, .filter-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sort-controls label, .filter-controls label {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .category-dropdown, .sort-dropdown {
+            padding: 10px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            min-width: 200px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .sort-dropdown {
+            min-width: 150px;
+        }
+
+        /* Posts Grid */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (min-width: 900px) {
+            .posts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .post-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-color);
+        }
+
+        .post-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .post-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .post-excerpt {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .post-tags .tag {
+            padding: 0.3rem 0.7rem;
+            background-color: var(--code-bg);
+            color: var(--accent-color);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Pinned Posts */
+        .pinned-section {
+            margin-bottom: 3rem;
+        }
+
+        .pinned-grid .post-card {
+            position: relative;
+            border: 2px solid var(--accent-color);
+        }
+
+        .pinned-grid .post-card::before {
+            content: "📌 PINNED";
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 0 10px 0 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .section h1 {
+                font-size: 2rem;
+            }
+            
+            .posts-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .sort-controls, .filter-controls {
+                justify-content: space-between;
+            }
+            
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">Chirag Bansal</a>
+                <div class="header-right">
+                    <nav class="nav-links">
+                        <a href="index.html#about">About</a>
+                        <a href="index.html#projects">Projects</a>
+                        <a href="index.html#skills">Skills</a>
+                        <a href="posts.html">Blog</a>
+                        <a href="index.html#contact">Contact</a>
+                    </nav>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                        <span id="themeText">Dark</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Posts Section -->
+    <section class="section">
+        <div class="container">
+            <h1><i class="fas fa-blog"></i> All Posts</h1>
+            <p>Every post from my journey in AI, ML, and production systems — all in one place.</p>
+
+            <!-- Controls -->
+            <div class="posts-controls">
+                <div class="filter-controls">
+                    <label for="category-select">Browse by Category:</label>
+                    <select id="category-select" class="category-dropdown">
+                        <option value="all">All Posts</option>
+                    </select>
+                </div>
+                
+                <div class="sort-controls">
+                    <label for="sort-select">Sort by:</label>
+                    <select id="sort-select" class="sort-dropdown">
+                        <option value="date-desc">Newest First</option>
+                        <option value="date-asc">Oldest First</option>
+                        <option value="title-asc">Title (A-Z)</option>
+                        <option value="title-desc">Title (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Pinned Posts Section -->
+            <div id="pinned-posts-section" class="pinned-section" style="display: none;">
+                <h2><i class="fas fa-thumbtack"></i> Pinned Posts</h2>
+                <div id="pinned-posts" class="posts-grid pinned-grid"></div>
+            </div>
+
+            <!-- Regular Posts Section -->
+            <div id="regular-posts-section">
+                <h2 id="regular-posts-title"><i class="fas fa-file-alt"></i> Recent Posts</h2>
+                <div id="posts-container" class="posts-grid">
+                    <!-- Posts will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Chirag Bansal. Powered by AI Innovation.</p>
+            <p style="font-style: italic; margin-top: 0.5rem;">Building the future with AI, one model at a time 🚀</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample post data - Replace with actual blog posts data
+        const allPosts = [
+            {
+                title: "Building Production-Ready RAG Systems: Lessons Learned",
+                date: "2024-09-15",
+                dateFormatted: "September 15, 2024",
+                url: "#",
+                description: "Deep dive into architecting and deploying RAG systems at scale. Learn about vector databases, chunking strategies, and optimization techniques for real-world applications.",
+                category: "RAG & LLMs",
+                tags: ["RAG", "LLMs", "Production ML", "Vector Databases"],
+                pinned: true
+            },
+            {
+                title: "Fine-tuning LLMs with LoRA: A Practical Guide",
+                date: "2024-08-28",
+                dateFormatted: "August 28, 2024",
+                url: "#",
+                description: "Comprehensive guide to parameter-efficient fine-tuning using LoRA. Covers implementation details, hyperparameter tuning, and best practices for domain adaptation.",
+                category: "RAG & LLMs",
+                tags: ["Fine-tuning", "LoRA", "LLMs", "Transformers"],
+                pinned: false
+            },
+            {
+                title: "MLOps Best Practices for AI Teams",
+                date: "2024-08-10",
+                dateFormatted: "August 10, 2024",
+                url: "#",
+                description: "Establishing robust MLOps pipelines: versioning, monitoring, A/B testing, and automated retraining strategies for production ML systems.",
+                category: "MLOps & Infrastructure",
+                tags: ["MLOps", "DevOps", "CI/CD", "Monitoring"],
+                pinned: false
+            },
+            {
+                title: "Vector Databases Compared: FAISS vs Qdrant vs Pinecone",
+                date: "2024-07-22",
+                dateFormatted: "July 22, 2024",
+                url: "#",
+                description: "Detailed comparison of popular vector databases for semantic search. Performance benchmarks, cost analysis, and use case recommendations.",
+                category: "RAG & LLMs",
+                tags: ["Vector Databases", "FAISS", "Qdrant", "RAG"],
+                pinned: false
+            },
+            {
+                title: "Prompt Engineering: From Zero to Hero",
+                date: "2024-07-05",
+                dateFormatted: "July 5, 2024",
+                url: "#",
+                description: "Master the art of prompt engineering with proven techniques: few-shot learning, chain-of-thought, and systematic prompt optimization.",
+                category: "RAG & LLMs",
+                tags: ["Prompt Engineering", "LLMs", "GPT", "Best Practices"],
+                pinned: false
+            },
+            {
+                title: "Deploying ML Models with Docker and Kubernetes",
+                date: "2024-06-18",
+                dateFormatted: "June 18, 2024",
+                url: "#",
+                description: "Step-by-step guide to containerizing and orchestrating ML models for scalable production deployment with monitoring and auto-scaling.",
+                category: "MLOps & Infrastructure",
+                tags: ["Docker", "Kubernetes", "Deployment", "Scalability"],
+                pinned: false
+            }
+        ];
+
+        // Sort and filter functions
+        function sortPosts(posts, sortBy) {
+            const sorted = [...posts];
+            switch(sortBy) {
+                case 'date-desc':
+                    return sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+                case 'date-asc':
+                    return sorted.sort((a, b) => new Date(a.date) - new Date(b.date));
+                case 'title-asc':
+                    return sorted.sort((a, b) => a.title.localeCompare(b.title));
+                case 'title-desc':
+                    return sorted.sort((a, b) => b.title.localeCompare(a.title));
+                default:
+                    return sorted;
+            }
+        }
+
+        // Populate category dropdown
+        function populateCategoryDropdown() {
+            const categories = [...new Set(allPosts.map(post => post.category))].sort();
+            const dropdown = document.getElementById('category-select');
+            
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                dropdown.appendChild(option);
+            });
+        }
+
+        function filterPosts(posts, category) {
+            if (category === 'all') return posts;
+            return posts.filter(post => post.category === category);
+        }
+
+        function createPostCard(post, isPinned = false) {
+            return `
+                <a href="${post.url}" class="post-card ${isPinned ? 'pinned' : ''}">
+                    <div class="post-date">${post.dateFormatted}</div>
+                    <h3 class="post-title">${post.title}</h3>
+                    <p class="post-excerpt">${post.description}</p>
+                    <div class="post-tags">
+                        ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderPosts() {
+            const sortBy = document.getElementById('sort-select').value;
+            const categoryFilter = document.getElementById('category-select').value;
+            
+            // Separate pinned and regular posts
+            let pinnedPosts = allPosts.filter(post => post.pinned);
+            if (pinnedPosts.length > 3) {
+                pinnedPosts = pinnedPosts.slice(0, 3);
+            }
+            
+            const regularPosts = allPosts.filter(post => !post.pinned);
+            
+            // Apply category filter and sorting
+            const filteredRegular = filterPosts(regularPosts, categoryFilter);
+            const sortedRegular = sortPosts(filteredRegular, sortBy);
+            
+            // Render pinned posts
+            const pinnedContainer = document.getElementById('pinned-posts');
+            const pinnedSection = document.getElementById('pinned-posts-section');
+            
+            if (pinnedPosts.length > 0) {
+                pinnedContainer.innerHTML = pinnedPosts.map(post => createPostCard(post, true)).join('');
+                pinnedSection.style.display = 'block';
+            } else {
+                pinnedSection.style.display = 'none';
+            }
+            
+            // Render regular posts
+            const regularContainer = document.getElementById('posts-container');
+            regularContainer.innerHTML = sortedRegular.map(post => createPostCard(post)).join('');
+            
+            // Update section title
+            const titleElement = document.getElementById('regular-posts-title');
+            const postCount = sortedRegular.length;
+            titleElement.innerHTML = `<i class="fas fa-file-alt"></i> ${pinnedPosts.length > 0 ? 'Recent Posts' : 'All Posts'} (${postCount})`;
+        }
+
+        // Theme Toggle
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+
+        if (currentTheme === 'dark') {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            themeText.textContent = 'Light';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const theme = document.documentElement.getAttribute('data-theme');
+            const newTheme = theme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            if (newTheme === 'dark') {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                themeText.textContent = 'Light';
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                themeText.textContent = 'Dark';
+            }
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            populateCategoryDropdown();
+            renderPosts();
+            
+            // Add event listeners
+            document.getElementById('category-select').addEventListener('change', renderPosts);
+            document.getElementById('sort-select').addEventListener('change', renderPosts);
+        });
+    </script>
+</body>
+</html>

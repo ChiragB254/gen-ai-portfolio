@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chirag Bansal - ML Engineer | AI & LLM Specialist</title>
+    <meta name="description" content="Building production-scale AI systems that drive real business impact">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --text-secondary: #666666;
+            --accent-color: #2563eb;
+            --card-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --code-bg: #f1f5f9;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-color: #3b82f6;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --code-bg: #1e293b;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-color);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 8px 16px;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .hero .tagline {
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* Badges */
+        .badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-color);
+        }
+
+        .badge.linkedin { --badge-color: #0077B5; }
+        .badge.github { --badge-color: #333; }
+        .badge.kaggle { --badge-color: #20BEFF; }
+        .badge.resume { --badge-color: #FF6B6B; }
+
+        .badge:hover {
+            background-color: var(--badge-color);
+            color: white;
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-color);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (min-width: 900px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 3rem;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-color);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+
+        /* Tech Tags */
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            padding: 0.4rem 0.8rem;
+            background-color: var(--code-bg);
+            color: var(--accent-color);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Metrics */
+        .metrics {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .metric-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Project Links */
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--code-bg);
+            color: var(--accent-color);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-category {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-color);
+        }
+
+        .skill-category h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .skill-item {
+            padding: 0.5rem 1rem;
+            background-color: var(--code-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-color);
+        }
+
+        .contact-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .contact-item {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .contact-item .label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item .value {
+            display: block;
+            font-size: 1rem;
+            color: var(--text-color);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a.value:hover {
+            color: var(--accent-color);
+        }
+
+        /* Posts Grid */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (min-width: 900px) {
+            .posts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .post-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-color);
+        }
+
+        .post-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .post-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .post-excerpt {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .post-tags .tag {
+            padding: 0.3rem 0.7rem;
+            background-color: var(--code-bg);
+            color: var(--accent-color);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 5px;
+        }
+
+        ::selection {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+            .section h2 {
+                font-size: 2rem;
+            }
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Chirag Bansal</div>
+                <div class="header-right">
+                    <nav class="nav-links">
+                        <a href="#about">About</a>
+                        <a href="#projects">Projects</a>
+                        <a href="#skills">Skills</a>
+                        <a href="posts.html">Blog</a>
+                        <a href="#contact">Contact</a>
+                    </nav>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                        <span id="themeText">Dark</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Chirag Bansal</h1>
+            <p class="subtitle">ML Engineer | Generative AI & LLM Specialist</p>
+            <p class="tagline">"Building production-scale AI systems that drive real business impact"</p>
+            
+            <div class="badges">
+                <a href="https://linkedin.com/in/chirag-bansal-ai" target="_blank" class="badge linkedin">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="https://github.com/ChiragB254" target="_blank" class="badge github">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="https://kaggle.com/chiragbansal" target="_blank" class="badge kaggle">
+                    <i class="fab fa-kaggle"></i> Kaggle
+                </a>
+                <a href="/resume.pdf" download class="badge resume">
+                    <i class="fas fa-file-pdf"></i> Resume
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about">
+        <div class="container">
+            <h2><i class="fas fa-user-circle"></i> About Me</h2>
+            <p>
+                2+ years of production experience delivering measurable impact through AI solutions. Expert in RAG architectures, 
+                model deployment, and turning complex business problems into data-driven solutions. Specialized in generative AI, 
+                LLMs, and building scalable ML systems that create real business value.
+            </p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">78%</div>
+                    <div class="stat-label">Model Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$100K+</div>
+                    <div class="stat-label">Cost Savings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">38%</div>
+                    <div class="stat-label">Response Time Improvement</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">92%</div>
+                    <div class="stat-label">Retrieval Accuracy</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="section" id="projects">
+        <div class="container">
+            <h2><i class="fas fa-rocket"></i> Featured Projects</h2>
+            <p>Showcasing production-ready AI solutions that deliver measurable business impact</p>
+            
+            <div class="cards">
+                <div class="card">
+                    <h3><i class="fas fa-brain"></i> Financial Document Intelligence System</h3>
+                    <p>Production-ready RAG system for analyzing Scotiabank earnings reports with natural language queries. Achieved 92% retrieval accuracy and sub-second response times.</p>
+                    
+                    <div class="tech-tags">
+                        <span class="tech-tag">RAG</span>
+                        <span class="tech-tag">Groq API</span>
+                        <span class="tech-tag">Qdrant</span>
+                        <span class="tech-tag">Docling</span>
+                        <span class="tech-tag">T5</span>
+                    </div>
+                    
+                    <div class="metrics">
+                        <div class="metric">
+                            <span class="metric-value">92%</span>
+                            <span class="metric-label">Retrieval Accuracy</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">&lt;1s</span>
+                            <span class="metric-label">Response Time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-heartbeat"></i> Health Buddy - Medical AI Assistant</h3>
+                    <p>Fine-tuned Gemma 2 2B model using LoRA for medical query responses. Deployed on Hugging Face Spaces with 1000+ production queries handled.</p>
+                    
+                    <div class="tech-tags">
+                        <span class="tech-tag">Gemma 2</span>
+                        <span class="tech-tag">LoRA</span>
+                        <span class="tech-tag">Hugging Face</span>
+                        <span class="tech-tag">Gradio</span>
+                    </div>
+                    
+                    <div class="metrics">
+                        <div class="metric">
+                            <span class="metric-value">78%</span>
+                            <span class="metric-label">Accuracy</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">1000+</span>
+                            <span class="metric-label">Queries Handled</span>
+                        </div>
+                    </div>
+                    
+                    <div class="project-links">
+                        <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
+                        <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-cogs"></i> MLOps Pipeline for Production ML</h3>
+                    <p>Comprehensive MLOps pipeline covering the entire ML lifecycle, including model versioning, A/B testing, monitoring strategies, and automated retraining.</p>
+                    
+                    <div class="tech-tags">
+                        <span class="tech-tag">MLOps</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">A/B Testing</span>
+                        <span class="tech-tag">Monitoring</span>
+                    </div>
+                    
+                    <div class="project-links">
+                        <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-comments"></i> Conversational AI with LangChain</h3>
+                    <p>Intelligent chatbot using LangChain architecture with prompt engineering, memory management, and integration with vector databases.</p>
+                    
+                    <div class="tech-tags">
+                        <span class="tech-tag">LangChain</span>
+                        <span class="tech-tag">OpenAI</span>
+                        <span class="tech-tag">FAISS</span>
+                        <span class="tech-tag">Streamlit</span>
+                    </div>
+                    
+                    <div class="project-links">
+                        <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
+                        <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="section" id="skills">
+        <div class="container">
+            <h2><i class="fas fa-code"></i> Technical Skills</h2>
+            <p>Core competencies and technologies I work with</p>
+            
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3><i class="fas fa-robot"></i> AI/ML</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">LLMs</span>
+                        <span class="skill-item">RAG</span>
+                        <span class="skill-item">Generative AI</span>
+                        <span class="skill-item">Fine-tuning</span>
+                        <span class="skill-item">Prompt Engineering</span>
+                        <span class="skill-item">Vector Databases</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3><i class="fas fa-tools"></i> Tools & Frameworks</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">PyTorch</span>
+                        <span class="skill-item">TensorFlow</span>
+                        <span class="skill-item">LangChain</span>
+                        <span class="skill-item">Hugging Face</span>
+                        <span class="skill-item">OpenAI API</span>
+                        <span class="skill-item">Groq</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3><i class="fas fa-database"></i> Data & Infrastructure</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Python</span>
+                        <span class="skill-item">Docker</span>
+                        <span class="skill-item">Qdrant</span>
+                        <span class="skill-item">FAISS</span>
+                        <span class="skill-item">MLOps</span>
+                        <span class="skill-item">AWS/GCP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Posts -->
+    <section class="section">
+        <div class="container">
+            <h2><i class="fas fa-blog"></i> Latest Posts</h2>
+            <p>Exploring AI, ML, and the future of intelligent systems. Here are my recent thoughts and technical deep dives.</p>
+            
+            <div id="posts-container" class="posts-grid">
+                <!-- Posts will be loaded dynamically -->
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Loading posts...
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:2rem;">
+                <a class="badge" href="posts.html">
+                    <i class="fas fa-arrow-right"></i> View All Posts
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact">
+        <div class="container">
+            <h2><i class="fas fa-envelope"></i> Get In Touch</h2>
+            <p>Ready to collaborate on AI projects? I'm always interested in discussing new opportunities and innovative solutions.</p>
+            
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">📧</div>
+                    <h3>Email</h3>
+                    <div class="contact-item">
+                        <span class="label">Personal</span>
+                        <a href="mailto:chiragbansal254@gmail.com" class="value">chiragbansal254@gmail.com</a>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">📱</div>
+                    <h3>Phone</h3>
+                    <div class="contact-item">
+                        <span class="label">Mobile</span>
+                        <a href="tel:+14374313144" class="value">(+1) 437-431-3144</a>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">📍</div>
+                    <h3>Location</h3>
+                    <div class="contact-item">
+                        <span class="label">Based in</span>
+                        <span class="value">Scarborough, ON, Canada</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Chirag Bansal. Powered by AI Innovation.</p>
+            <p style="font-style: italic; margin-top: 0.5rem;">Building the future with AI, one model at a time 🚀</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample post data - same as posts.html
+        const allPosts = [
+            {
+                title: "Building Production-Ready RAG Systems: Lessons Learned",
+                date: "2024-09-15",
+                dateFormatted: "September 15, 2024",
+                url: "#",
+                description: "Deep dive into architecting and deploying RAG systems at scale. Learn about vector databases, chunking strategies, and optimization techniques for real-world applications.",
+                category: "RAG & LLMs",
+                tags: ["RAG", "LLMs", "Production ML", "Vector Databases"],
+                pinned: true
+            },
+            {
+                title: "Fine-tuning LLMs with LoRA: A Practical Guide",
+                date: "2024-08-28",
+                dateFormatted: "August 28, 2024",
+                url: "#",
+                description: "Comprehensive guide to parameter-efficient fine-tuning using LoRA. Covers implementation details, hyperparameter tuning, and best practices for domain adaptation.",
+                category: "RAG & LLMs",
+                tags: ["Fine-tuning", "LoRA", "LLMs", "Transformers"],
+                pinned: false
+            },
+            {
+                title: "MLOps Best Practices for AI Teams",
+                date: "2024-08-10",
+                dateFormatted: "August 10, 2024",
+                url: "#",
+                description: "Establishing robust MLOps pipelines: versioning, monitoring, A/B testing, and automated retraining strategies for production ML systems.",
+                category: "MLOps & Infrastructure",
+                tags: ["MLOps", "DevOps", "CI/CD", "Monitoring"],
+                pinned: false
+            },
+            {
+                title: "Vector Databases Compared: FAISS vs Qdrant vs Pinecone",
+                date: "2024-07-22",
+                dateFormatted: "July 22, 2024",
+                url: "#",
+                description: "Detailed comparison of popular vector databases for semantic search. Performance benchmarks, cost analysis, and use case recommendations.",
+                category: "RAG & LLMs",
+                tags: ["Vector Databases", "FAISS", "Qdrant", "RAG"],
+                pinned: false
+            },
+            {
+                title: "Prompt Engineering: From Zero to Hero",
+                date: "2024-07-05",
+                dateFormatted: "July 5, 2024",
+                url: "#",
+                description: "Master the art of prompt engineering with proven techniques: few-shot learning, chain-of-thought, and systematic prompt optimization.",
+                category: "RAG & LLMs",
+                tags: ["Prompt Engineering", "LLMs", "GPT", "Best Practices"],
+                pinned: false
+            },
+            {
+                title: "Deploying ML Models with Docker and Kubernetes",
+                date: "2024-06-18",
+                dateFormatted: "June 18, 2024",
+                url: "#",
+                description: "Step-by-step guide to containerizing and orchestrating ML models for scalable production deployment with monitoring and auto-scaling.",
+                category: "MLOps & Infrastructure",
+                tags: ["Docker", "Kubernetes", "Deployment", "Scalability"],
+                pinned: false
+            }
+        ];
+
+        // Load latest posts on homepage (limit to 3)
+        function loadLatestPosts() {
+            const postsContainer = document.getElementById('posts-container');
+            
+            // Sort by date descending and take first 3
+            const latestPosts = [...allPosts]
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 3);
+            
+            if (latestPosts.length === 0) {
+                postsContainer.innerHTML = '<div class="loading">No posts available yet.</div>';
+                return;
+            }
+            
+            postsContainer.innerHTML = latestPosts.map(post => `
+                <a href="${post.url}" class="post-card">
+                    <div class="post-date">${post.dateFormatted}</div>
+                    <h3 class="post-title">${post.title}</h3>
+                    <p class="post-excerpt">${post.description}</p>
+                    <div class="post-tags">
+                        ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // Theme Toggle
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+
+        if (currentTheme === 'dark') {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            themeText.textContent = 'Light';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const theme = document.documentElement.getAttribute('data-theme');
+            const newTheme = theme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            if (newTheme === 'dark') {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                themeText.textContent = 'Light';
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                themeText.textContent = 'Dark';
+            }
+        });
+
+        // Load posts on page load
+        document.addEventListener('DOMContentLoaded', loadLatestPosts);
+    </script>
+</body>
+</html>
