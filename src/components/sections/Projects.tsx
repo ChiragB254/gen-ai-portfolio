@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ExternalLink, Github, TrendingUp } from 'lucide-react'
-import { fadeInUp, staggerContainer, staggerItem } from '@/lib/utils'
+import { staggerContainer, staggerItem } from '@/lib/utils'
 import { Project } from '@/types'
 
 const projects: Project[] = [
@@ -92,7 +92,7 @@ export default function Projects() {
           variants={staggerContainer}
           className="grid grid-cols-1 lg:grid-cols-2 gap-8"
         >
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <motion.div
               key={project.id}
               variants={staggerItem}
@@ -211,7 +211,7 @@ export default function Projects() {
               document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
             }}
           >
-            Let's Collaborate
+            Let&apos;s Collaborate
           </motion.a>
         </motion.div>
       </div>

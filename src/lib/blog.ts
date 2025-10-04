@@ -73,7 +73,8 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
     // Convert BlogPostCard[] to BlogPost[] (without content)
     return data.posts.map(post => ({
       ...post,
-      content: '' // Content is not included in list responses for performance
+      content: '', // Content is not included in list responses for performance
+      published: true // All posts in the API response are published
     }));
   } catch (error) {
     console.error('Error getting all blog posts:', error);

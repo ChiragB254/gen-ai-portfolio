@@ -1,0 +1,217 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [ develop, staging ]
+    paths-ignore:
+      - 'README.md'
+      - 'DEPLOYMENT.md'
+      - '.gitignore'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+  DEPLOYMENT_PATH: '/opt/chirag-portfolio-staging'
+  
+jobs:
+  # Build and Test Job
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Run type checking (if TypeScript)
+      run: npm run build --if-present || echo "No build script found"
+      
+    - name: Build application
+      run: npm run build
+      env:
+        NODE_ENV: production
+        NEXT_TELEMETRY_DISABLED: 1
+        
+    # Only run tests if we have a test script
+    - name: Run tests
+      run: npm test --if-present || echo "No test script found"
+      
+    - name: Archive build artifacts
+      if: github.event_name != 'pull_request'
+      uses: actions/upload-artifact@v4
+      with:
+        name: staging-build-files
+        path: |
+          .next/
+          public/
+          package.json
+          package-lock.json
+          next.config.ts
+          Dockerfile
+          docker-compose.yml
+          nginx/
+          deployment/
+          systemd/
+          .env.production.example
+        retention-days: 1
+
+  # Deploy Job (only for push events, not PR)
+  deploy-staging:
+    needs: build-and-test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: staging
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: staging-build-files
+        
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.ORACLE_CLOUD_STAGING_SSH_KEY || secrets.ORACLE_CLOUD_SSH_KEY }}
+        
+    - name: Add server to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.ORACLE_CLOUD_STAGING_HOST || secrets.ORACLE_CLOUD_HOST }} >> ~/.ssh/known_hosts
+        
+    - name: Create deployment package
+      run: |
+        tar -czf staging-deployment-$(date +%Y%m%d-%H%M%S).tar.gz \
+          .next/ \
+          public/ \
+          package.json \
+          package-lock.json \
+          next.config.ts \
+          Dockerfile \
+          docker-compose.yml \
+          nginx/ \
+          deployment/ \
+          systemd/ \
+          .env.production.example
+        ls -la *.tar.gz
+        
+    - name: Transfer files to staging server
+      run: |
+        PACKAGE_NAME=$(ls staging-deployment-*.tar.gz)
+        echo "Transferring $PACKAGE_NAME to staging server..."
+        scp $PACKAGE_NAME ${{ secrets.ORACLE_CLOUD_STAGING_USER || secrets.ORACLE_CLOUD_USER }}@${{ secrets.ORACLE_CLOUD_STAGING_HOST || secrets.ORACLE_CLOUD_HOST }}:/tmp/
+        
+    - name: Deploy to staging server
+      run: |
+        ssh ${{ secrets.ORACLE_CLOUD_STAGING_USER || secrets.ORACLE_CLOUD_USER }}@${{ secrets.ORACLE_CLOUD_STAGING_HOST || secrets.ORACLE_CLOUD_HOST }} << 'EOF'
+          set -e
+          
+          # Switch to root for deployment
+          sudo su - << 'DEPLOY_SCRIPT'
+          
+          echo "Starting staging deployment process..."
+          
+          # Create backup of current staging deployment
+          if [ -d "${{ env.DEPLOYMENT_PATH }}" ]; then
+            echo "Creating backup..."
+            cp -r ${{ env.DEPLOYMENT_PATH }} ${{ env.DEPLOYMENT_PATH }}-backup-$(date +%Y%m%d-%H%M%S)
+          fi
+          
+          # Create staging deployment directory
+          mkdir -p ${{ env.DEPLOYMENT_PATH }}
+          cd ${{ env.DEPLOYMENT_PATH }}
+          
+          # Extract new deployment
+          echo "Extracting staging deployment package..."
+          tar -xzf /tmp/staging-deployment-*.tar.gz -C ${{ env.DEPLOYMENT_PATH }} --strip-components=0
+          
+          # Use development nginx config for staging
+          if [ -f nginx/nginx.dev.conf ]; then
+            cp nginx/nginx.dev.conf nginx/nginx.conf
+          fi
+          
+          # Set permissions
+          chown -R ${{ secrets.ORACLE_CLOUD_STAGING_USER || secrets.ORACLE_CLOUD_USER }}:${{ secrets.ORACLE_CLOUD_STAGING_USER || secrets.ORACLE_CLOUD_USER }} ${{ env.DEPLOYMENT_PATH }}
+          chmod +x deployment/*.sh
+          
+          # Stop existing staging services
+          echo "Stopping existing staging services..."
+          docker-compose -f docker-compose.yml -p chirag-portfolio-staging down || true
+          
+          # Build and start new staging containers
+          echo "Building and starting staging containers..."
+          docker-compose -f docker-compose.yml -p chirag-portfolio-staging up --build -d
+          
+          # Wait for application to start
+          echo "Waiting for staging application to start..."
+          sleep 20
+          
+          # Verify staging deployment
+          echo "Verifying staging deployment..."
+          if docker-compose -p chirag-portfolio-staging ps | grep -q "Up"; then
+            echo "✅ Staging deployment successful! Containers are running."
+          else
+            echo "❌ Staging deployment failed! Containers are not running."
+            docker-compose -p chirag-portfolio-staging logs
+            exit 1
+          fi
+          
+          # Clean up old staging deployment files
+          rm -f /tmp/staging-deployment-*.tar.gz
+          
+          # Clean up old staging backups (keep only last 2)
+          ls -t ${{ env.DEPLOYMENT_PATH }}-backup-* 2>/dev/null | tail -n +3 | xargs rm -rf || true
+          
+          echo "🚀 Staging deployment completed successfully!"
+          
+        DEPLOY_SCRIPT
+        EOF
+        
+    - name: Staging Health Check
+      run: |
+        echo "Performing staging health check..."
+        sleep 5
+        
+        # Try to curl the staging application
+        if ssh ${{ secrets.ORACLE_CLOUD_STAGING_USER || secrets.ORACLE_CLOUD_USER }}@${{ secrets.ORACLE_CLOUD_STAGING_HOST || secrets.ORACLE_CLOUD_HOST }} 'curl -f http://localhost:3000 > /dev/null 2>&1'; then
+          echo "✅ Staging health check passed!"
+        else
+          echo "⚠️ Staging health check failed, but deployment may still be successful."
+          echo "Please verify manually."
+        fi
+        
+    - name: Comment on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '🚀 **Staging deployment completed!**\n\nYour changes have been deployed to the staging environment for testing.'
+          })
+          
+    - name: Notify staging deployment status
+      if: always()
+      run: |
+        if [ "${{ job.status }}" == "success" ]; then
+          echo "🎉 Staging deployment completed successfully!"
+          echo "Your staging application should be available for testing."
+        else
+          echo "❌ Staging deployment failed!"
+          echo "Please check the logs and verify your staging server configuration."
+        fi

@@ -26,8 +26,13 @@ interface SystemStats {
     loadAverage: number[];
   };
   network?: {
-    interfaces: any[];
+    interfaces: NetworkInterface[];
   };
+}
+
+interface NetworkInterface {
+  name: string;
+  addresses?: os.NetworkInterfaceInfo[];
 }
 
 async function getCPUUsage(): Promise<number> {
@@ -48,7 +53,14 @@ async function getCPUUsage(): Promise<number> {
   });
 }
 
-async function getGPUInfo(): Promise<any> {
+interface GPUInfo {
+  temperature: number;
+  usage: number;
+  memory: number;
+  model: string;
+}
+
+async function getGPUInfo(): Promise<GPUInfo> {
   return new Promise((resolve) => {
     // Try to get GPU info using system commands
     const process = spawn('nvidia-smi', ['--query-gpu=temperature.gpu,utilization.gpu,memory.used,name', '--format=csv,noheader,nounits']);

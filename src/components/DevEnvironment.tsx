@@ -7,16 +7,14 @@ import {
   MemoryStick, 
   GitBranch, 
   Zap, 
-  Cpu, 
-  HardDrive,
   Activity,
   TrendingUp
 } from 'lucide-react';
 import { SectionProps } from '@/types';
 import { containerVariants, cardVariants } from '@/lib/animations';
 import { cn } from '@/lib/utils';
-import { getSystemStats, getDevStats, getCurrentTraining } from '@/lib/system';
-import { getGitHubStats, getTimeAgo } from '@/lib/github';
+import { getSystemStats, getDevStats, getCurrentTraining, type SystemStats, type DevStats, type TrainingStats } from '@/lib/system';
+import { getTimeAgo } from '@/lib/github';
 
 interface DevEnvironmentProps extends SectionProps {
   id?: string;
@@ -70,10 +68,9 @@ const ProgressBar = ({ value, maxValue, status, animated = true }: ProgressBarPr
 
 export default function DevEnvironment({ className, id }: DevEnvironmentProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [systemStats, setSystemStats] = useState<any>(null);
-  const [devStats, setDevStats] = useState<any>(null);
-  const [trainingStats, setTrainingStats] = useState<any>(null);
-  const [githubStats, setGithubStats] = useState<any>(null);
+  const [systemStats, setSystemStats] = useState<SystemStats | null>(null);
+  const [devStats, setDevStats] = useState<DevStats | null>(null);
+  const [trainingStats, setTrainingStats] = useState<TrainingStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const controls = useAnimation();
   const ref = React.useRef(null);
@@ -89,17 +86,15 @@ export default function DevEnvironment({ className, id }: DevEnvironmentProps) {
   useEffect(() => {
     async function fetchAllData() {
       try {
-        const [system, dev, training, github] = await Promise.all([
+        const [system, dev, training] = await Promise.all([
           Promise.resolve(getSystemStats()),
           Promise.resolve(getDevStats()),
           Promise.resolve(getCurrentTraining()),
-          getGitHubStats()
         ]);
         
         setSystemStats(system);
         setDevStats(dev);
         setTrainingStats(training);
-        setGithubStats(github);
       } catch (error) {
         console.error('Failed to fetch environment data:', error);
       } finally {
@@ -167,7 +162,7 @@ export default function DevEnvironment({ className, id }: DevEnvironmentProps) {
       label: 'Commits Today',
       value: devStats?.commitsToday || 2,
       icon: <GitBranch className="w-5 h-5 text-ai-primary" />,
-      trend: `${devStats?.commitsToday > 10 ? '+' : ''}${Math.floor((devStats?.commitsToday || 2) * 0.3)} from yesterday`
+      trend: `${(devStats?.commitsToday || 2) > 10 ? '+' : ''}${Math.floor((devStats?.commitsToday || 2) * 0.3)} from yesterday`
     },
     {
       id: 'active-branches',
@@ -208,7 +203,7 @@ export default function DevEnvironment({ className, id }: DevEnvironmentProps) {
       }, index * 200);
 
       return () => clearTimeout(timer);
-    }, [widget.value, index, isVisible]);
+    }, [widget.value, index]);
 
     return (
       <motion.div
@@ -222,8 +217,8 @@ export default function DevEnvironment({ className, id }: DevEnvironmentProps) {
         {/* Header */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className="text-ai-primary">
-              {React.cloneElement(widget.icon as React.ReactElement, { className: "w-4 h-4" })}
+            <div className="text-ai-primary w-4 h-4">
+              {widget.icon}
             </div>
             <h3 className="text-sm font-semibold text-white">{widget.title}</h3>
           </div>

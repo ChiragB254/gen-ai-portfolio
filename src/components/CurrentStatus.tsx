@@ -2,14 +2,21 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
-import { MapPin, Clock, GitCommit, Folder, Code, Activity, Star } from 'lucide-react';
+import { MapPin, Clock, GitCommit, Folder, Code, Activity } from 'lucide-react';
 import { SectionProps } from '@/types';
 import { containerVariants, cardVariants } from '@/lib/animations';
 import { cn } from '@/lib/utils';
-import { getGitHubStats, getTimeAgo } from '@/lib/github';
+import { getGitHubStats, getTimeAgo, type GitHubStats } from '@/lib/github';
 
 interface CurrentStatusProps extends SectionProps {
   id?: string;
+}
+
+interface GitHubActivity {
+  type: string;
+  repo: string;
+  date: string;
+  description: string;
 }
 
 interface StatusMetric {
@@ -23,7 +30,7 @@ interface StatusMetric {
 
 export default function CurrentStatus({ className, id }: CurrentStatusProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [githubStats, setGithubStats] = useState<any>(null);
+  const [githubStats, setGithubStats] = useState<GitHubStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const controls = useAnimation();
   const ref = React.useRef(null);
@@ -109,7 +116,7 @@ export default function CurrentStatus({ className, id }: CurrentStatusProps) {
 
       animationFrame = requestAnimationFrame(animate);
       return () => cancelAnimationFrame(animationFrame);
-    }, [target, duration, isVisible]);
+    }, [target, duration]);
 
     return count;
   };
@@ -133,7 +140,9 @@ export default function CurrentStatus({ className, id }: CurrentStatusProps) {
             "bg-slate-600/50 group-hover:bg-ai-primary/20",
             metric.color
           )}>
-            {React.cloneElement(metric.icon as React.ReactElement, { className: "w-4 h-4" })}
+            <div className="w-4 h-4">
+              {metric.icon}
+            </div>
           </div>
           <div className="flex-1">
             <span className="text-2xl font-bold text-white tabular-nums">
@@ -232,7 +241,7 @@ export default function CurrentStatus({ className, id }: CurrentStatusProps) {
                   </div>
                 ))
               ) : (
-                githubStats?.recentActivity?.map((activity: any, index: number) => {
+                githubStats?.recentActivity?.map((activity: GitHubActivity, index: number) => {
                   const colors = ['bg-ai-cyan', 'bg-green-400', 'bg-purple-400', 'bg-yellow-400'];
                   const textColors = ['text-ai-cyan', 'text-green-400', 'text-purple-400', 'text-yellow-400'];
                   const colorIndex = index % colors.length;

@@ -22,7 +22,7 @@ export default function Home() {
                 </div>
                 <div>
                   <h1 className="text-4xl lg:text-6xl font-bold mb-4">
-                    Hi, I'm <span className="text-gradient">Chirag Bansal</span>
+                    Hi, I&apos;m <span className="text-gradient">Chirag Bansal</span>
                   </h1>
                   <h2 className="text-xl lg:text-2xl text-gray-400 mb-6">
                     ML Engineer specializing in <span className="text-accent-400">Generative AI</span> & <span className="text-accent-400">LLMs</span>
@@ -84,9 +84,9 @@ export default function Home() {
           <div className="container-custom">
             <div className="text-center mb-16">
               <span className="section-badge mb-4">Contact</span>
-              <h2 className="text-3xl lg:text-4xl font-bold mb-6">Let's Build Something Amazing</h2>
+              <h2 className="text-3xl lg:text-4xl font-bold mb-6">Let&apos;s Build Something Amazing</h2>
               <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
-                Ready to collaborate on AI projects? I'm always interested in discussing new opportunities and innovative solutions.
+                Ready to collaborate on AI projects? I&apos;m always interested in discussing new opportunities and innovative solutions.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">

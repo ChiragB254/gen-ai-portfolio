@@ -1,4 +1,4 @@
-interface SystemStats {
+export interface SystemStats {
   gpu: {
     usage: number;
     temperature: number;
@@ -137,11 +137,20 @@ export interface BatteryInfo {
   timeRemaining: string;
 }
 
+interface NavigatorWithBattery extends Navigator {
+  getBattery?: () => Promise<{
+    level: number;
+    charging: boolean;
+    dischargingTime: number;
+  }>;
+}
+
 export async function getBatteryInfo(): Promise<BatteryInfo | null> {
   try {
     // Check if Battery API is available
-    if ('getBattery' in navigator) {
-      const battery = await (navigator as any).getBattery();
+    const nav = navigator as NavigatorWithBattery;
+    if (nav.getBattery) {
+      const battery = await nav.getBattery();
       return {
         level: Math.round(battery.level * 100),
         charging: battery.charging,
@@ -165,10 +174,20 @@ export interface ConnectionInfo {
   rtt: number;
 }
 
+interface NavigatorWithConnection extends Navigator {
+  connection?: {
+    type?: string;
+    effectiveType?: string;
+    downlink?: number;
+    rtt?: number;
+  };
+}
+
 export function getConnectionInfo(): ConnectionInfo | null {
   try {
-    if ('connection' in navigator) {
-      const conn = (navigator as any).connection;
+    const nav = navigator as NavigatorWithConnection;
+    if (nav.connection) {
+      const conn = nav.connection;
       return {
         type: conn.type || 'unknown',
         effectiveType: conn.effectiveType || 'unknown',
@@ -190,10 +209,19 @@ export interface MemoryInfo {
   jsHeapSizeLimit: number;
 }
 
+interface PerformanceWithMemory extends Performance {
+  memory?: {
+    usedJSHeapSize: number;
+    totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
+  };
+}
+
 export function getMemoryInfo(): MemoryInfo | null {
   try {
-    if ('memory' in performance) {
-      const memory = (performance as any).memory;
+    const perf = performance as PerformanceWithMemory;
+    if (perf.memory) {
+      const memory = perf.memory;
       return {
         usedJSHeapSize: memory.usedJSHeapSize,
         totalJSHeapSize: memory.totalJSHeapSize,

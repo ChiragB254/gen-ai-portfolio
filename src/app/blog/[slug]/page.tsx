@@ -5,9 +5,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, User, Clock, Tag } from 'lucide-react';
-import { getBlogPost, getLatestBlogPosts, type BlogPost } from '@/lib/blog';
+import { getBlogPost, getLatestBlogPosts, type BlogPost, type BlogPostCard } from '@/lib/blog';
 import { fadeInVariants, containerVariants } from '@/lib/animations';
-import { cn } from '@/lib/utils';
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -18,7 +17,7 @@ interface BlogPostPageProps {
 export default function BlogPostPage({ params }: BlogPostPageProps) {
   const resolvedParams = React.use(params);
   const [post, setPost] = useState<BlogPost | null>(null);
-  const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
+  const [relatedPosts, setRelatedPosts] = useState<BlogPostCard[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

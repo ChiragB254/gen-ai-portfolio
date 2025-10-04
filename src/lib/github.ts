@@ -20,16 +20,22 @@ interface GitHubRepo {
   created_at: string;
 }
 
+interface GitHubEventPayload {
+  commits?: { length: number }[];
+  ref_type?: string;
+  action?: string;
+}
+
 interface GitHubEvent {
   type: string;
   repo: {
     name: string;
   };
   created_at: string;
-  payload: any;
+  payload: GitHubEventPayload;
 }
 
-interface GitHubStats {
+export interface GitHubStats {
   totalCommits: number;
   publicRepos: number;
   totalStars: number;

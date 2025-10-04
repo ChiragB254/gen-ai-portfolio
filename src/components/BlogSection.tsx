@@ -9,11 +9,9 @@ import { containerVariants } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 import BlogCard from './BlogCard';
 
-interface BlogSectionProps extends SectionProps {}
-
 type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc';
 
-export default function BlogSection({ className }: BlogSectionProps) {
+export default function BlogSection({ className }: SectionProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortOption, setSortOption] = useState<SortOption>('date-desc');
@@ -45,7 +43,7 @@ export default function BlogSection({ className }: BlogSectionProps) {
 
   // Filter and sort posts
   const filteredAndSortedPosts = useMemo(() => {
-    let filtered = blogCards.filter(post => {
+    const filtered = blogCards.filter(post => {
       const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           post.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));

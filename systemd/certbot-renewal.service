@@ -1,0 +1,9 @@
+[Unit]
+Description=Certbot SSL Certificate Renewal
+Documentation=https://certbot.eff.org/docs/
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/certbot renew --quiet --no-self-upgrade
+ExecStartPost=/bin/systemctl reload nginx

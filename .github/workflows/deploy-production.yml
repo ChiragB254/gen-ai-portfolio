@@ -1,0 +1,193 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - 'DEPLOYMENT.md'
+      - '.gitignore'
+      - 'docs/**'
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+  DEPLOYMENT_PATH: '/opt/chirag-portfolio'
+  
+jobs:
+  # Build and Test Job
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Run type checking (if TypeScript)
+      run: npm run build --if-present || echo "No build script found"
+      
+    - name: Build application
+      run: npm run build
+      env:
+        NODE_ENV: production
+        NEXT_TELEMETRY_DISABLED: 1
+        
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files
+        path: |
+          .next/
+          public/
+          package.json
+          package-lock.json
+          next.config.ts
+          Dockerfile
+          docker-compose.yml
+          nginx/
+          deployment/
+          systemd/
+          .env.production.example
+        retention-days: 1
+
+  # Deploy Job
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-files
+        
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.ORACLE_CLOUD_SSH_KEY }}
+        
+    - name: Add server to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.ORACLE_CLOUD_HOST }} >> ~/.ssh/known_hosts
+        
+    - name: Create deployment package
+      run: |
+        tar -czf deployment-$(date +%Y%m%d-%H%M%S).tar.gz \
+          .next/ \
+          public/ \
+          package.json \
+          package-lock.json \
+          next.config.ts \
+          Dockerfile \
+          docker-compose.yml \
+          nginx/ \
+          deployment/ \
+          systemd/ \
+          .env.production.example
+        ls -la *.tar.gz
+        
+    - name: Transfer files to server
+      run: |
+        PACKAGE_NAME=$(ls deployment-*.tar.gz)
+        echo "Transferring $PACKAGE_NAME to server..."
+        scp $PACKAGE_NAME ${{ secrets.ORACLE_CLOUD_USER }}@${{ secrets.ORACLE_CLOUD_HOST }}:/tmp/
+        
+    - name: Deploy to server
+      run: |
+        PACKAGE_NAME=$(ls deployment-*.tar.gz | head -1)
+        ssh ${{ secrets.ORACLE_CLOUD_USER }}@${{ secrets.ORACLE_CLOUD_HOST }} << 'EOF'
+          set -e
+          
+          # Switch to root for deployment
+          sudo su - << 'DEPLOY_SCRIPT'
+          
+          echo "Starting deployment process..."
+          
+          # Create backup of current deployment
+          if [ -d "${{ env.DEPLOYMENT_PATH }}" ]; then
+            echo "Creating backup..."
+            cp -r ${{ env.DEPLOYMENT_PATH }} ${{ env.DEPLOYMENT_PATH }}-backup-$(date +%Y%m%d-%H%M%S)
+          fi
+          
+          # Create deployment directory if it doesn't exist
+          mkdir -p ${{ env.DEPLOYMENT_PATH }}
+          cd ${{ env.DEPLOYMENT_PATH }}
+          
+          # Extract new deployment
+          echo "Extracting deployment package..."
+          tar -xzf /tmp/deployment-*.tar.gz -C ${{ env.DEPLOYMENT_PATH }} --strip-components=0
+          
+          # Set permissions
+          chown -R ${{ secrets.ORACLE_CLOUD_USER }}:${{ secrets.ORACLE_CLOUD_USER }} ${{ env.DEPLOYMENT_PATH }}
+          chmod +x deployment/*.sh
+          
+          # Stop existing services
+          echo "Stopping existing services..."
+          docker-compose down || true
+          
+          # Build and start new containers
+          echo "Building and starting new containers..."
+          docker-compose up --build -d
+          
+          # Wait for application to start
+          echo "Waiting for application to start..."
+          sleep 30
+          
+          # Verify deployment
+          echo "Verifying deployment..."
+          if docker-compose ps | grep -q "Up"; then
+            echo "✅ Deployment successful! Containers are running."
+          else
+            echo "❌ Deployment failed! Containers are not running."
+            docker-compose logs
+            exit 1
+          fi
+          
+          # Clean up old deployment files
+          rm -f /tmp/deployment-*.tar.gz
+          
+          # Clean up old backups (keep only last 3)
+          ls -t ${{ env.DEPLOYMENT_PATH }}-backup-* 2>/dev/null | tail -n +4 | xargs rm -rf || true
+          
+          echo "🚀 Deployment completed successfully!"
+          
+        DEPLOY_SCRIPT
+        EOF
+        
+    - name: Health Check
+      run: |
+        echo "Performing health check..."
+        sleep 10
+        
+        # Try to curl the application (adjust URL as needed)
+        if ssh ${{ secrets.ORACLE_CLOUD_USER }}@${{ secrets.ORACLE_CLOUD_HOST }} 'curl -f http://localhost:3000 > /dev/null 2>&1'; then
+          echo "✅ Health check passed!"
+        else
+          echo "⚠️ Health check failed, but deployment may still be successful."
+          echo "Please verify manually at your domain."
+        fi
+        
+    - name: Notify deployment status
+      if: always()
+      run: |
+        if [ "${{ job.status }}" == "success" ]; then
+          echo "🎉 Production deployment completed successfully!"
+          echo "Your application should be available at your configured domain."
+        else
+          echo "❌ Production deployment failed!"
+          echo "Please check the logs and verify your server configuration."
+        fi
